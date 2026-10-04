@@ -12,7 +12,7 @@ the top lead heading right, so the first and last features are loops, and the ma
 mirror-symmetric top to bottom. `arcs` open arcs sit between `arcs + 1` loops.
 
 Everything is generated in a 100 x 100 box centered on (50, 50). Pure Python, no deps:
-    python3 tools/logo.py [outdir]             # writes outdir/mark.svg (default: logo/)
+    python3 tools/logo.py [outdir]             # writes the logo set (default: logo/)
 """
 import math
 
@@ -108,9 +108,68 @@ def svg(m, color="#fff", bg=None, size=None, view=(0, 0, 100, 100), corner=0.19)
          f'<path d="{m["ring"]}"/><path d="{m["d"]}"/></g>')
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb}"{dim}>{back}{g}</svg>'
 
+METALS = {
+    # brushed finish: a narrow tonal drift (start, middle, end), a rim for dark grounds, and
+    # optional grain strength / shade (how far the streaks are pulled toward dark)
+    "silver": {"tones": ("#b8bcc2", "#cfd2d7", "#afb3ba"), "rim": "#373a40",
+               "grain": 0.6, "shade": 0.06},   # light surface: stronger, slightly darker streaks
+    "nickel": {"tones": ("#9c988f", "#b0aca3", "#959189"), "rim": "#3a3935"},
+}
+
+def svg_metal(m, metal="silver", outline=None, hairline=0.4, grain=None, bg=None):
+    """Large-format mark in brushed metal, the same overall width as the flat mark: a
+    hairline outline (default: the metal's own dark rim) around a stroke narrowed by
+    2 * hairline, which is filled with a flat metal tone and fine vertical
+    grain (fractal noise stretched along y, soft-light blended at `grain` strength), masked to
+    the mark. Two passes over the same geometry, so crossings merge without seams."""
+    t = METALS[metal]
+    outline = outline or t["rim"]
+    grain = t.get("grain", 0.45) if grain is None else grain
+    shade = t.get("shade", 0)
+    inner = m["stroke"] - 2 * hairline   # outline's outer edge matches the flat mark
+    stops = "".join(f'<stop offset="{o}" stop-color="{c}"/>' for o, c in zip((0, 0.5, 1), t["tones"]))
+    paths = f'<path d="{m["ring"]}"/><path d="{m["d"]}"/>'
+    common = 'fill="none" stroke-linecap="round" stroke-linejoin="round"'
+    defs = (f'<linearGradient id="tone" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100">{stops}</linearGradient>'
+            f'<filter id="brush" x="0" y="0" width="100" height="100" filterUnits="userSpaceOnUse">'
+            f'<feTurbulence type="fractalNoise" baseFrequency="4.8 0.015" numOctaves="1" seed="7" result="n"/>'
+            f'<feColorMatrix in="n" type="saturate" values="0" result="gray"/>'
+            f'<feComponentTransfer in="gray" result="soft">'
+            f'<feFuncR type="linear" slope="1" intercept="{-shade}"/><feFuncG type="linear" slope="1" intercept="{-shade}"/>'
+            f'<feFuncB type="linear" slope="1" intercept="{-shade}"/>'
+            f'<feFuncA type="linear" slope="0" intercept="{grain}"/></feComponentTransfer>'
+            f'<feBlend in="soft" in2="SourceGraphic" mode="soft-light" result="b"/>'
+            f'<feComposite in="b" in2="SourceGraphic" operator="in"/></filter>'
+            f'<mask id="wire" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">'
+            f'<g {common} stroke="#fff" stroke-width="{inner}">{paths}</g></mask>')
+    back = f'<rect width="100" height="100" fill="{bg}"/>' if bg else ""
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs>{defs}</defs>{back}'
+            f'<g {common} stroke="{outline}" stroke-width="{m["stroke"]}">{paths}</g>'
+            f'<rect width="100" height="100" fill="url(#tone)" filter="url(#brush)" mask="url(#wire)"/></svg>')
+
+VARIANTS = {
+    # name: (renderer, kwargs) -- large-format set, all at stroke 3
+    "mark":              ("flat",  {"color": "#000"}),
+    "mark-white":        ("flat",  {"color": "#fff"}),
+    "mark-silver":       ("metal", {"metal": "silver", "outline": "#1a1a1a"}),
+    "mark-silver-dark":  ("metal", {"metal": "silver"}),
+    "mark-nickel":       ("metal", {"metal": "nickel", "outline": "#1a1a1a"}),
+    "mark-nickel-dark":  ("metal", {"metal": "nickel"}),
+}
+
 if __name__ == "__main__":
     import sys, os
     out = sys.argv[1] if len(sys.argv) > 1 else "logo"
     os.makedirs(out, exist_ok=True)
-    open(f"{out}/mark.svg", "w").write(svg(mark(), color="#000"))
-    print("wrote", out)
+    m = mark(stroke=3.0)
+    for name, (kind, kw) in VARIANTS.items():
+        open(f"{out}/{name}.svg", "w").write(svg(m, **kw) if kind == "flat" else svg_metal(m, **kw))
+    try:  # 2048px transparent PNGs, if a headless Chrome is around (see favicons.py)
+        import favicons, tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            for name in VARIANTS:
+                open(f"{out}/{name}.png", "wb").write(
+                    favicons.png(open(f"{out}/{name}.svg").read(), 2048, tmp))
+    except SystemExit:
+        print("no headless Chrome: wrote SVGs only")
+    print("wrote", out, sorted(os.listdir(out)))
