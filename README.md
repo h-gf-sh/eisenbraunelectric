@@ -68,9 +68,9 @@ The sky is a fixed layer the size of the viewport (`100lvh`, so mobile toolbars 
 
 ## Domain
 
-Live on Vercel since 2026-10-04. DNS stays at Wix: apex A records `216.198.79.1` and `64.29.17.1`, `www` CNAME to `ffccbb534deca3bb.vercel-dns-017.com` (redirects 308 to the apex, which is canonical). Google Workspace MX, SPF and site-verification records are in the same Wix zone and untouched.
+Live on Vercel since 2026-10-04. DNS stays at Wix: apex A records `216.198.79.1` and `64.29.17.1`, `www` CNAME to `ffccbb534deca3bb.vercel-dns-017.com` (redirects 308 to the apex, which is canonical). Google Workspace MX, SPF, site-verification, DKIM (`google._domainkey`, 2048-bit) and DMARC (`_dmarc`) records are in the same Wix zone.
 
 ## To do
 
 - Favicon (none set yet).
-- DKIM (Google Admin → Gmail → Authenticate email) and a DMARC record, both in Wix DNS.
+- DMARC is `p=none` (monitoring, reports to tom@). After a few weeks of clean reports, move `_dmarc` to `p=quarantine`.
