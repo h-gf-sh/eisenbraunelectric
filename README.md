@@ -72,6 +72,5 @@ Live on Vercel since 2026-10-04. DNS stays at Wix: apex A records `216.198.79.1`
 
 ## To do
 
-
 - Favicon (none set yet).
 - DKIM (Google Admin → Gmail → Authenticate email) and a DMARC record, both in Wix DNS.
