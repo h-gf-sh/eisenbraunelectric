@@ -3,3 +3,4 @@ node_modules/
 .vercel/
 __pycache__/
 RUNBOOK-github-accounts.md
+.env*
