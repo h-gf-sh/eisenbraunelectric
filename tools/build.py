@@ -142,7 +142,7 @@ HEAD = """<!doctype html>
 <meta property="og:title" content="{title}">
 {ogdesc}<meta property="og:url" content="{canonical}">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://www.eisenbraunelectric.co/assets/sky.jpg">
+<meta property="og:image" content="https://eisenbraunelectric.co/assets/sky.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="{a}fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{a}style.css">
@@ -188,7 +188,7 @@ for slug, label, cid in SECTIONS:
 
 home_html = page_head("Tom Eisenbraun | Eisenbraun Electric Co",
                       "Electric guitar arrangements, experimental soundscapes, ambience for days.  Eisenbraun Electric Co.",
-                      "https://www.eisenbraunelectric.co", "/assets/") + f"""<body class="page-home">
+                      "https://eisenbraunelectric.co/", "/assets/") + f"""<body class="page-home">
 <div class="sky" aria-hidden="true"></div>
 <div class="frame">
 {header("home", "home")}
@@ -209,7 +209,7 @@ chunks = [c.strip() for c in raw.split("<br><br>") if c.strip()]
 about_paras = "\n    ".join(f"<p>{c}</p>" for c in chunks[1:]).replace(OLD_CONTACT, CONTACT)
 about_html = page_head("contact | eisenbraunelectric",
                        "",
-                       "https://www.eisenbraunelectric.co/about", "/assets/") + f"""<body class="page-about">
+                       "https://eisenbraunelectric.co/about", "/assets/") + f"""<body class="page-about">
 <div class="sky" aria-hidden="true"></div>
 <div class="frame">
 {header("contact", "about")}
