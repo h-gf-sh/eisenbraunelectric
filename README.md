@@ -24,6 +24,10 @@ tools/                Playwright capture + build scripts (python3, playwright)
 
 Links and asset paths are root-relative clean URLs (`/`, `/about`, `/#radio-ghost`, `/assets/…`), matching what Vercel serves with `cleanUrls`, so no click goes through a redirect. That means the pages don't preview from disk; run `vercel dev` (or `python3 -m http.server`) inside `site/`.
 
+## Mark and favicon
+
+The mark (an inductor symbol in a ring; its loops read as stacked cursive E's) is generated, not drawn: `tools/logo.py` computes the coil as a prolate trochoid and emits SVG; its parameters (`arcs`, `kink_ratio`, `roundover`, `aspect`, `fill`, `stroke`, `lead_out`) are documented in the file. `python3 tools/favicons.py` writes `site/favicon.svg`, `site/favicon.ico` (16 + 32) and `site/apple-touch-icon.png` (180) from it, rasterizing with Playwright's `chrome-headless-shell`; smaller sizes get a heavier stroke.
+
 ## Deploy
 
 Pushes that touch `site/` are deployed by GitHub Actions (`.github/workflows/deploy.yml`) to the Vercel project `eisenbraunelectric` in the `eisenbraun-electric-co` scope: `main` goes to production, any other branch to a preview. Vercel's built-in Git integration isn't used because the Vercel account's GitHub login is a different account from the one that owns this repo. Repo settings needed: secret `VERCEL_TOKEN`, variables `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`. To deploy by hand instead: `vercel --prod` from `site/`.
@@ -64,7 +68,7 @@ The sky is a fixed layer the size of the viewport (`100lvh`, so mobile toolbars 
 - Narrow screens get a fluid version of the same layout instead of Wix's scaled-down 980px grid. Under 640px the column goes full width (16px gutters), the title scales to fit one line, players go full width, and the nav keeps its tight right-aligned stack, dropped into flow under the tagline.
 - Section headings are `h2` with anchor ids (`#still-life`, `#radio-ghost`, …) instead of Wix's `#comp-…` ids.
 - Wix's Google Analytics tag (`G-MN4RN3JYWL`) is not carried over.
-- The Wix favicon was Wix's generic one; none is set yet.
+- The Wix favicon was Wix's generic one; the rebuild has its own (below).
 
 ## Domain
 
@@ -72,5 +76,4 @@ Live on Vercel since 2026-10-04. DNS stays at Wix: apex A records `216.198.79.1`
 
 ## To do
 
-- Favicon (none set yet).
 - DMARC is `p=none` (monitoring, reports to tom@). After a few weeks of clean reports, move `_dmarc` to `p=quarantine`.

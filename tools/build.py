@@ -146,6 +146,9 @@ HEAD = """<!doctype html>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="{a}fonts/newsreader-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{a}style.css">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 """
 
