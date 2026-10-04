@@ -1,0 +1,50 @@
+{
+ "rts": [
+  {
+   "id": "WRchTxt3-ceb",
+   "top": 43,
+   "left": 465,
+   "w": 500,
+   "html": "<p class=\"font_6 wixui-rich-text__text\" style=\"font-size:55px; line-height:normal;\"><span style=\"font-size:55px;\" class=\"wixui-rich-text__text\"><span style=\"letter-spacing:normal;\" class=\"wixui-rich-text__text\"><span style=\"font-family:kepler-w03-light-scd-cp,serif;\" class=\"wixui-rich-text__text\"><span class=\"color_38 wixui-rich-text__text\"><a href=\"https://www.eisenbraunelectric.co\" target=\"_self\" class=\"wixui-rich-text__text\">Eisenbraun Electric Co.</a></span></span></span></span></p>"
+  },
+  {
+   "id": "comp-kqq2gvpd",
+   "top": 99,
+   "left": 465,
+   "w": 310,
+   "html": "<h1 class=\"font_0 wixui-rich-text__text\" style=\"font-size:19px;\"><span style=\"font-size:19px;\" class=\"wixui-rich-text__text\">[guitar arrangements by Tom Eisenbraun]</span></h1>"
+  },
+  {
+   "id": "comp-krgr82q5",
+   "top": 300,
+   "left": 237,
+   "w": 494,
+   "html": "<h1 class=\"font_0 wixui-rich-text__text\" style=\"line-height:normal; font-size:25px;\"><span style=\"letter-spacing:normal;\" class=\"wixui-rich-text__text\">About\u2014<br class=\"wixui-rich-text__text\">\n<br class=\"wixui-rich-text__text\">\n<span style=\"font-size:18px;\" class=\"wixui-rich-text__text\">Tom Eisenbraun dropped out of the gifted &amp; talented program in search of first principles, instead became the&nbsp;<span style=\"text-decoration:underline;\" class=\"wixui-rich-text__text\"><a href=\"https://www.poetryfoundation.org/poems/43434/the-man-on-the-dump\" target=\"_blank\" rel=\"noreferrer noopener\" class=\"wixui-rich-text__text\">man on the dump</a></span>, whispering: '<span style=\"font-style:italic;\" class=\"wixui-rich-text__text\">invisible priest!' </span>beneath the blatter of grackles, ensued long evenings imagining the breeze through taut strings, seeking out that one thing, that it would be enough.&nbsp;<br class=\"wixui-rich-text__text\">\n<br class=\"wixui-rich-text__text\">\nIf you seek a better answer, you'll need to learn to ask a better question. Better still yet, where <span style=\"font-style:italic;\" class=\"wixui-rich-text__text\">was</span>&nbsp;it one first heard of the truth?<br class=\"wixui-rich-text__text\">\n<br class=\"wixui-rich-text__text\">\nCorrespondence welcomed</span><span style=\"font-size:18px;\" class=\"wixui-rich-text__text\">:<br class=\"wixui-rich-text__text\">\n<span style=\"font-weight:bold;\" class=\"wixui-rich-text__text\"><span style=\"font-style:italic;\" class=\"wixui-rich-text__text\"><a data-auto-recognition=\"true\" href=\"mailto:tom@eisenbraunmusic.com\" class=\"wixui-rich-text__text\">tom@eisenbraunmusic.com</a></span></span></span></span></h1>"
+  }
+ ],
+ "bgs": [],
+ "imgs": [
+  {
+   "src": "https://static.wixstatic.com/media/d12f4e_d837690dc1bd4e5c86b7c78b789fd2fe~mv2.jpg/v1/fill/w_1440,h_900,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/d12f4e_d837690dc1bd4e5c86b7c78b789fd2fe~mv2.jpg",
+   "w": 1440,
+   "h": 900,
+   "fit": "cover",
+   "pos": "50% 50%",
+   "parentPos": "absolute"
+  }
+ ],
+ "vids": [
+  {
+   "tag": "DIV",
+   "id": "",
+   "bgc": "rgb(255, 255, 255)",
+   "op": "1"
+  },
+  {
+   "tag": "DIV",
+   "id": "",
+   "bgc": "rgba(0, 0, 0, 0)",
+   "op": "1"
+  }
+ ]
+}

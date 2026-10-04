@@ -1,0 +1,203 @@
+/* Eisenbraun Electric Co. — static rebuild of the Wix site.
+   Desktop layout mirrors the original 980px Wix grid; under 640px it reflows to one column. */
+
+/* Newsreader — variable wght 200–800, opsz 6–72 (OFL). Stands in for Wix's Kepler Light.
+   The overrides give it Kepler's vertical metrics (750/250), so baselines sit where they did on Wix. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("fonts/newsreader-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+  ascent-override: 75%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("fonts/newsreader-latin-opsz-italic.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+  ascent-override: 75%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}
+
+:root {
+  --ink: #e8e6e6;          /* Wix text color rgb(232,230,230) */
+  --nav: #ffffff;
+  --nav-current: #c7c7c7;
+  --serif: "Newsreader", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  /* Kept on the light side of Kepler on purpose. opsz pinned (18 display / 20 text): the
+     narrowest cuts, and at weight 300 the text cut reproduces every Wix line break. */
+  --w-display: 300;
+  --w-text: 300;
+  --fvs-text: "opsz" 20;
+  --fvs-display: "opsz" 18;
+  --col: 500px;            /* text column, as on Wix */
+  --frame: 980px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #3d679f;     /* fallback while the sky loads */
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: var(--w-text);
+  font-variation-settings: var(--fvs-text);
+  font-size: 16px;
+  line-height: 1.4;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fixed sky (Wix page background with "fixed" scroll). A fixed layer instead of
+   background-attachment:fixed so it also holds still on iOS Safari. */
+.sky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;          /* largest viewport, so mobile toolbars collapsing never expose a strip */
+  z-index: -1;
+  /* cover: scales to whichever of width or height needs it, so the photo always fills and never tiles */
+  background: url("sky.jpg") center / cover no-repeat;
+}
+
+a { color: inherit; }
+em { font-style: italic; }
+p { margin: 0; }
+h1, h2 { margin: 0; font-weight: var(--w-display); }
+h2, .site-title, .site-tagline { font-variation-settings: var(--fvs-display); }
+
+.frame {
+  width: var(--frame);
+  margin: 0 auto;
+  padding-bottom: 130px;
+}
+
+/* ---------- header ---------- */
+.site-header {
+  position: relative;
+  width: var(--col);
+  margin: 0 auto;
+  padding-top: 43px;
+  height: 260px;           /* first section heading lands at ~263px, as on Wix */
+}
+.site-title {
+  font-size: 55px;
+  line-height: 1;
+  font-weight: var(--w-display);
+  margin-left: -4px;
+  padding-top: 6px;
+  letter-spacing: -0.01em;
+}
+.site-title a { text-decoration: none; }
+.site-tagline {
+  font-size: 19px;
+  line-height: 1.2;
+  font-weight: var(--w-display);
+  margin-top: -6px;
+  margin-left: -4px;
+}
+.site-header nav {
+  position: absolute;
+  top: 110px;
+  right: 4px;
+  text-align: right;
+}
+.site-header ul { list-style: none; margin: 0; padding: 0; }
+.site-header li { font-size: 16px; line-height: 13px; }
+.site-header nav a {
+  color: var(--nav);
+  text-decoration: none;
+  font-weight: var(--w-display);
+}
+.site-header nav a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.site-header nav a[aria-current="page"] { color: var(--nav-current); }
+
+/* ---------- sections ---------- */
+main { width: var(--col); margin: 0 auto; }
+.sec { scroll-margin-top: 24px; }
+
+.sec h2 {
+  font-size: 22px;
+  line-height: 1.15;
+}
+.sec h2 .rel { white-space: nowrap; }
+
+.sec-lead h2 { font-size: 36px; line-height: 1.2; }
+.essay { margin-top: 22px; line-height: 22.4px; }
+.essay p + p { margin-top: 22.4px; }
+
+/* Wix gave every blurb its own line height; kept per section so the page breathes the same way */
+.blurb { margin-top: 0; line-height: var(--lh, 23px); }
+.blurb p + p { margin-top: var(--lh, 23px); }
+
+/* Per-section rhythm, measured off the live Wix page (heading, blurb and player tops within ~1px).
+   --lh: blurb line height · --s: space above the section · --b: blurb offset · --e: space above the player */
+.sec-the-imagined-psaltery               { --lh: 23px; --s: 70px; --b: 1px; --e: 33px; }
+.sec-still-life                          { --lh: 24px; --s: 108px; --b: -1px; --e: 22px; }
+.sec-guided-meditation-for-the-solar-eclipse { --lh: 23px; --s: 49px; --b: 1px; --e: 18px; }
+.sec-memory-of-the-sound-of-home         { --lh: 20px; --s: 46px; --b: 0; --e: 20px; }
+.sec-radio-ghost                         { --lh: 20px; --s: 40px; --b: -1px; --e: 19px; }
+.sec-slow-joy                            { --lh: 25px; --s: 47px; --b: 2px; --e: 15px; }
+.sec-the-october-country                 { --lh: 25px; --s: 56px; --b: 2px; --e: 22px; }
+.sec + .sec { margin-top: var(--s, 70px); }
+.sec .blurb { margin-top: var(--b, 0); }
+.sec .blurb + .embed { margin-top: var(--e, 24px); }
+.sec-still-life h2 { font-size: 24px; }
+
+.verse { font-size: 15px; line-height: 18px; margin-top: 20px; }
+.verse + .verse { margin-top: 18px; }
+
+/* ---------- embeds ---------- */
+.embed { margin-top: 24px; margin-left: auto; margin-right: auto; }
+.embed iframe { display: block; border: 0; width: 100%; height: 100%; }
+.embed-yt { width: 548px; height: 308px; margin-left: -24px; background: #000; }
+.sec-lead .embed-yt { margin-top: 4px; }
+.embed-sc { width: 500px; height: 503px; }
+/* Bandcamp's large player draws its own white frame; the Wix embed box added 8px above it */
+.embed-bc { width: 500px; margin-left: 2px; padding: 8px 0 5px; }
+.embed-bc iframe { width: 500px; height: 500px; }
+
+/* ---------- about ---------- */
+.page-about main { width: var(--frame); }
+.about { padding-left: 7px; width: 501px; padding-top: 63px; }
+.about h2 { font-size: 25px; line-height: 25px; }
+.about-body { margin-top: 28px; font-size: 18px; line-height: 25px; }
+.about-body p + p { margin-top: 25px; }
+.page-about .site-header { height: 237px; }
+
+/* ---------- narrow screens (Wix only ever served the desktop grid) ---------- */
+@media (max-width: 1000px) {
+  .frame { width: auto; padding: 0 16px 48px; }
+  .page-about main { width: var(--col); }
+  .about { padding-left: 0; width: auto; }
+}
+@media (max-width: 640px) {
+  :root { --col: 100%; }
+  .site-header, .page-about .site-header { height: auto; padding-top: 28px; }
+  .site-title { font-size: clamp(30px, 9vw, 55px); margin-left: 0; }
+  .site-tagline { font-size: 17px; margin-left: 0; margin-top: 2px; }
+  /* same narrow right-aligned stack as desktop, just dropped into flow under the tagline */
+  .site-header nav { position: static; margin-top: 10px; }
+  main { width: auto; }
+  .sec-lead { margin-top: 36px; }
+  .sec-lead h2 { font-size: 30px; }
+  .sec + .sec { margin-top: 64px; }
+  .embed-yt, .embed-sc, .embed-bc { width: 100%; margin-left: 0; margin-right: 0; }
+  .embed-yt { height: auto; aspect-ratio: 548 / 308; }
+  .embed-sc { height: 450px; }
+  .embed-bc { padding: 0; }
+  .embed-bc iframe { width: 100%; height: auto; aspect-ratio: 1; }
+  .about { padding-top: 40px; }
+  .about-body { font-size: 17px; }
+}
+
+/* The Wix contact line was synthetic-bold italic with no underline */
+.about-body a[href^="mailto:"] { text-decoration: none; font-weight: 600; }
