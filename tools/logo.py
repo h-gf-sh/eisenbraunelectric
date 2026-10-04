@@ -62,7 +62,7 @@ def fillet(corner, coil, sign, reverse=False):
     return f"C{p2[0]:.2f},{p2[1]:.2f} {p1[0]:.2f},{p1[1]:.2f} {sx:.2f},{sy:.2f}"
 
 def mark(arcs=3, ring_r=36, fill=0.8, aspect=0.62, kink_ratio=2.2, roundover=0.12,
-         lead_out=10, stroke=4.0, ring=True):
+         lead_out=10, stroke=4.0, ring=True, steps=60):
     """Return the mark's geometry as SVG path data (stroked, no fill), 100x100 box.
 
     aspect: coil width / height between its endpoints. fill: the coil is scaled so its
@@ -70,14 +70,15 @@ def mark(arcs=3, ring_r=36, fill=0.8, aspect=0.62, kink_ratio=2.2, roundover=0.1
     fill * ring_r from the center, keeping even clearance inside the ring.
     roundover: size of the fillet where stem meets coil, as the fraction of a turn of coil
     it replaces (0 = sharp corner); the bottom mirrors the top.
+    steps: samples per half turn; lower gives a smaller file (each sample is one cubic).
     """
     cx = cy = 50
-    coil = coil_points(arcs, 0, -1, 1, aspect, kink_ratio)
+    coil = coil_points(arcs, 0, -1, 1, aspect, kink_ratio, steps)
     reach = max(math.hypot(x, y) for x, y in coil)
     k = fill * ring_r / reach
     coil = [(cx + x * k, cy + y * k) for x, y in coil]
-    # coil_points samples 60 points per half turn, so a fraction of a turn is 120 * f
-    j = int(roundover * 120)
+    # a fraction f of a turn is 2 * steps * f samples
+    j = round(roundover * 2 * steps)
     body = coil[j:len(coil) - j]
     d = f"M{cx},{cy - ring_r - lead_out}"
     if j:

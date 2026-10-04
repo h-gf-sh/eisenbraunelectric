@@ -15,7 +15,9 @@ STROKE = {16: 7.5, 32: 6.5, 180: 5.0, "svg": 5.5}
 LEAD = 14
 
 def tile(stroke, rounded=True):
-    return logo.svg(logo.mark(stroke=stroke, lead_out=LEAD), bg="sky", corner=0.19 if rounded else 0)
+    # 16 samples per half turn: ~4KB instead of ~15KB, no visible difference at icon sizes
+    m = logo.mark(stroke=stroke, lead_out=LEAD, steps=16)
+    return logo.svg(m, bg="sky", corner=0.19 if rounded else 0)
 
 def chrome():
     if os.environ.get("CHROME"):
