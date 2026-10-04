@@ -1,0 +1,39 @@
+# Deploys site/ to the Vercel project "eisenbraunelectric" (scope eisenbraun-electric-co).
+# Vercel's own Git integration can't see this repo: the Vercel account's GitHub login is
+# t-famit, and this repo lives on h-gf-sh. So the CLI deploys from here instead.
+#   main          -> production (eisenbraunelectric.vercel.app, and the custom domain once added)
+#   other branches -> preview deployment; URL in the job summary
+# Secrets: VERCEL_TOKEN. Variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (not secret).
+name: Deploy
+
+on:
+  push:
+    paths:
+      - "site/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then target="--prod"; else target=""; fi
+          url=$(npx --yes vercel@59 deploy $target --yes --token "${{ secrets.VERCEL_TOKEN }}")
+          echo "Deployed: $url" | tee -a "$GITHUB_STEP_SUMMARY"

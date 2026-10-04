@@ -24,6 +24,10 @@ tools/                Playwright capture + build scripts (python3, playwright)
 
 Links and asset paths are root-relative clean URLs (`/`, `/about`, `/#radio-ghost`, `/assets/…`), matching what Vercel serves with `cleanUrls`, so no click goes through a redirect. That means the pages don't preview from disk; run `vercel dev` (or `python3 -m http.server`) inside `site/`.
 
+## Deploy
+
+Pushes that touch `site/` are deployed by GitHub Actions (`.github/workflows/deploy.yml`) to the Vercel project `eisenbraunelectric` in the `eisenbraun-electric-co` scope: `main` goes to production, any other branch to a preview. Vercel's built-in Git integration isn't used because the Vercel account's GitHub login is a different account from the one that owns this repo. Repo settings needed: secret `VERCEL_TOKEN`, variables `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`. To deploy by hand instead: `vercel --prod` from `site/`.
+
 ## Parity
 
 At 1440px wide, every section heading, text block and player lands on the same pixel row as the live page (headings, first and last text lines, player tops, page height 6981px), with identical line breaks in every paragraph, Page text and outbound links diff clean against the live site, apart from the contact address (below).
@@ -66,5 +70,4 @@ The sky is a fixed layer the size of the viewport (`100lvh`, so mobile toolbars 
 
 
 - Favicon (none set yet).
-- Put the repo on the personal GitHub account and connect it to Vercel (see the local, untracked `RUNBOOK-github-accounts.md`).
 - Add `eisenbraunelectric.co` / `www` in Vercel and move the A/CNAME records off Wix. Leave the Google MX records alone; `tom@eisenbraunelectric.co` is already live.
