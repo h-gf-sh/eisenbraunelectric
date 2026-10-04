@@ -147,12 +147,23 @@ def svg_metal(m, metal="silver", outline=None, hairline=0.4, grain=None, bg=None
             f'<g {common} stroke="{outline}" stroke-width="{m["stroke"]}">{paths}</g>'
             f'<rect width="100" height="100" fill="url(#tone)" filter="url(#brush)" mask="url(#wire)"/></svg>')
 
+def svg_graphite(m):
+    """The flat black mark with the brushed silver mark (black hairline) laid over it at
+    50% opacity: a dark brushed graphite. For light grounds."""
+    metal = svg_metal(m, "silver", outline="#1a1a1a")
+    head, body = metal.split("</defs>", 1)
+    body = body.removesuffix("</svg>")
+    black = (f'<g fill="none" stroke="#000" stroke-width="{m["stroke"]}" stroke-linecap="round" '
+             f'stroke-linejoin="round"><path d="{m["ring"]}"/><path d="{m["d"]}"/></g>')
+    return f'{head}</defs>{black}<g opacity="0.5">{body}</g></svg>'
+
 VARIANTS = {
     # name: (renderer, kwargs) -- large-format set, all at stroke 3
     "mark":              ("flat",  {"color": "#000"}),
     "mark-white":        ("flat",  {"color": "#fff"}),
     "mark-silver":       ("metal", {"metal": "silver", "outline": "#1a1a1a"}),
     "mark-silver-dark":  ("metal", {"metal": "silver"}),
+    "mark-graphite":     ("graphite", {}),
     "mark-nickel":       ("metal", {"metal": "nickel", "outline": "#1a1a1a"}),
     "mark-nickel-dark":  ("metal", {"metal": "nickel"}),
 }
@@ -163,7 +174,8 @@ if __name__ == "__main__":
     os.makedirs(out, exist_ok=True)
     m = mark(stroke=3.0)
     for name, (kind, kw) in VARIANTS.items():
-        open(f"{out}/{name}.svg", "w").write(svg(m, **kw) if kind == "flat" else svg_metal(m, **kw))
+        render = {"flat": svg, "metal": svg_metal, "graphite": svg_graphite}[kind]
+        open(f"{out}/{name}.svg", "w").write(render(m, **kw))
     try:  # 2048px transparent PNGs, if a headless Chrome is around (see favicons.py)
         import favicons, tempfile
         with tempfile.TemporaryDirectory() as tmp:
