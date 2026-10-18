@@ -16,6 +16,6 @@ README.md is the reference for what this site is and how it was built; read it f
 
 ## Git
 
-- Remote is SSH (`git@github.com:h-gf-sh/eisenbraunelectric.git`). The right identity and key come from a per-folder git config on this machine; check `git config user.email` before the first commit in a session.
-- Don't run `gh auth login`/`gh auth switch` or change global git config for this repo: `gh` is signed in to a different account that other projects depend on.
+- Remote is HTTPS (`https://github.com/h-gf-sh/eisenbraunelectric.git`). Identity and credentials come from a per-folder git config on this machine (see `~/projects/personal/CLAUDE.md`); check `git config user.email` before the first commit in a session.
+- Don't run `gh auth login`/`gh auth switch` or change global git config for this repo: `gh`'s active account is a different one that other projects depend on.
 - `RUNBOOK-github-accounts.md` is local only (gitignored) and must stay out of the repo.
