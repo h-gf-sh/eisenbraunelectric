@@ -72,8 +72,10 @@ The sky is a fixed layer the size of the viewport (`100lvh`, so mobile toolbars 
 
 ## Domain
 
-Live on Vercel since 2026-10-04. DNS stays at Wix: apex A records `216.198.79.1` and `64.29.17.1`, `www` CNAME to `ffccbb534deca3bb.vercel-dns-017.com` (redirects 308 to the apex, which is canonical). Google Workspace MX, SPF, site-verification, DKIM (`google._domainkey`, 2048-bit) and DMARC (`_dmarc`) records are in the same Wix zone.
+Live on Vercel since 2026-10-04. DNS moved from Wix to Cloudflare (free plan) in late October 2026; the registrar transfer from Wix to Cloudflare is pending. Apex A records `216.198.79.1` and `64.29.17.1`, `www` CNAME to `ffccbb534deca3bb.vercel-dns-017.com` (redirects 308 to the apex, which is canonical), all DNS-only (not proxied). Google Workspace MX, SPF, site-verification, DKIM (`google._domainkey`, 2048-bit) and DMARC (`_dmarc`) records are in the same Cloudflare zone. The Wix website plan was cancelled 2026-11-01.
+
+The old domain, eisenbraunmusic.com, is a user alias domain in the same Workspace (mail to tom@eisenbraunmusic.com lands in tom@eisenbraunelectric.co). Its DNS is also on Cloudflare, and a Cloudflare Redirect Rule sends apex and `www` to `https://eisenbraunelectric.co/` with a 301.
 
 ## To do
 
-- DMARC is `p=none` (monitoring, reports to tom@). After a few weeks of clean reports, move `_dmarc` to `p=quarantine`.
+- DMARC on both domains is `p=quarantine` (since 2026-11-01) and reports to Cloudflare DMARC Management. After a few weeks of clean reports, move both to `p=reject`.
