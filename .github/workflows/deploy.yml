@@ -3,6 +3,7 @@
 # t-famit, and this repo lives on h-gf-sh. So the CLI deploys from here instead.
 #   main          -> production (eisenbraunelectric.vercel.app, and the custom domain once added)
 #   other branches -> preview deployment; URL in the job summary
+#   dependabot/*   -> skipped (Dependabot runs don't get repo secrets); merging to main deploys
 # Secrets: VERCEL_TOKEN. Variables: VERCEL_ORG_ID, VERCEL_PROJECT_ID (not secret).
 name: Deploy
 
@@ -22,6 +23,7 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ !startsWith(github.ref, 'refs/heads/dependabot/') }}
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
